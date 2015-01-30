@@ -55,11 +55,10 @@ class DummyDynamixelIO(object):
     multi-servo instruction packet.
     """
 
-    def __init__(self, port, baudrate, readback_echo=False):
+    def __init__(self, port, baudrate):
         """ Constructor takes serial port and baudrate as arguments. """
         self.serial_mutex = Lock()
         self.port_name = port
-        self.readback_echo = readback_echo
 
         self.goal = {}
         self.position = {}
@@ -139,7 +138,7 @@ class DummyDynamixelIO(object):
 
 class DummyProxy(SerialProxy):
     def connect(self):
-        self.dxl_io = DummyDynamixelIO(self.port_name, self.baud_rate, self.readback_echo)
+        self.dxl_io = DummyDynamixelIO(self.port_name, self.baud_rate)
         self._SerialProxy__find_motors()
         self.running = True
         if self.update_rate > 0: Thread(target=self._SerialProxy__update_motor_states).start()
